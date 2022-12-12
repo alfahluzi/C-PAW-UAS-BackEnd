@@ -1,16 +1,24 @@
 const express = require("express");
 const { db_query, db_testConnection } = require("./helper/db_connect_helper");
+const { END_POINT } = require("./helper/end_point_helper");
 const app = express();
-
-const PORT = 3000;
-const END_POINT = {
-  test: "/test",
-  akun: "/akun",
-};
-
-app.listen(PORT, "localhost", function () {
-  console.log("Server is Listening at Port 3000!");
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,PATCH,DELETE");
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "Content-Type",
+    "Authorization"
+  );
+  next();
 });
+const PORT = 4000;
+app.listen(PORT, "localhost", function () {
+  console.log(`Server is Listening at Port ${PORT}!`);
+});
+
+const adminProduk_c = require("./controller/admin/Produk");
+app.use("/", adminProduk_c);
 
 app.get("/", (req, res) => {
   db_testConnection((result) => {
@@ -20,22 +28,5 @@ app.get("/", (req, res) => {
       end_point: END_POINT,
     };
     return res.json(stat);
-  });
-});
-
-app.get("/test", (req, res) => {
-  console.log("Request is Incoming");
-  const responseData = {
-    message: "Server API Test",
-    endingMessage: "Server API is actived, you can use this API",
-  };
-  const jsonContent = JSON.stringify(responseData);
-  res.end(jsonContent);
-});
-
-app.get("/akun", (req, res) => {
-  db_query("SELECT * FROM akun", (err, rows) => {
-    if (err) return res.status(500).json(err);
-    return res.status(200).json(rows);
   });
 });
