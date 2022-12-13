@@ -4,6 +4,61 @@ const { END_POINT } = require("../../helper/end_point_helper");
 const router = express.Router();
 module.exports = router;
 
+router.get(END_POINT.edit_jenis, (req, res) => {
+  let jenis = req.params.jenis;
+  let id_kategori = req.params.id_kategori;
+  let id_jenis = req.params.id_jenis;
+
+  db_query(
+    `UPDATE jenis_barang 
+    SET jenis = '${jenis}', kategori_id = ${id_kategori}  
+    WHERE Jenis_barang_id = ${id_jenis} `,
+    (err, rows) => {
+      if (err) return res.status(500).json(err);
+      console.log("query success");
+      return res.status(200).json(rows);
+    }
+  );
+});
+router.get(END_POINT.edit_kategori, (req, res) => {
+  let kategori = req.params.kategori;
+  let id = req.params.id;
+  db_query(
+    `UPDATE kategori_barang 
+    SET kategori = '${kategori}' 
+    WHERE Kategori_barang_id = ${id} `,
+    (err, rows) => {
+      if (err) return res.status(500).json(err);
+      console.log("query success");
+      return res.status(200).json(rows);
+    }
+  );
+});
+
+router.get(END_POINT.tambah_jenis, (req, res) => {
+  let jenis = req.params.jenis;
+  let id_kategori = req.params.id_kategori;
+  console.log(jenis);
+  console.log(id_kategori);
+  db_query(
+    `INSERT INTO jenis_barang (jenis, kategori_id) VALUES ("${jenis}", ${id_kategori});`,
+    (err, rows) => {
+      if (err) return res.status(500).json(err);
+      return res.status(200).json(rows);
+    }
+  );
+});
+router.get(END_POINT.tambah_kategori, (req, res) => {
+  let kategori = req.params.kategori;
+  db_query(
+    "INSERT INTO kategori_barang (kategori)" + `VALUES ("${kategori}");`,
+    (err, rows) => {
+      if (err) return res.status(500).json(err);
+      return res.status(200).json(rows);
+    }
+  );
+});
+
 router.get(END_POINT.barang, (req, res) => {
   db_query("SELECT * FROM barang", (err, rows) => {
     if (err) return res.status(500).json(err);
