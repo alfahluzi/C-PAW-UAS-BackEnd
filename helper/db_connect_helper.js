@@ -1,9 +1,9 @@
 const mysql = require("mysql");
 var pool = mysql.createPool({
-  host: "sql6.freesqldatabase.com",
-  user: "sql6583280",
-  password: "Xkl52VBgJu",
-  database: "sql6583280",
+  host: "baj1ixzy01yq8ipybmtd-mysql.services.clever-cloud.com",
+  user: "um5ziela2njct0vz",
+  password: "iE7rRoqP8Ogo6vd3N6om",
+  database: "baj1ixzy01yq8ipybmtd",
 });
 
 function db_disconnect() {
