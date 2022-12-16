@@ -4,6 +4,7 @@ var pool = mysql.createPool({
   user: "um5ziela2njct0vz",
   password: "iE7rRoqP8Ogo6vd3N6om",
   database: "baj1ixzy01yq8ipybmtd",
+  port: 3306,
 });
 
 function db_disconnect() {
@@ -19,6 +20,7 @@ function db_testConnection(callback) {
     if (err) res = { error: err };
     res = { status: "connected" };
     callback(res);
+    conn.release();
   });
 }
 
@@ -40,16 +42,19 @@ function db_query(query, callback) {
 function executeQuery(query, callback) {
   pool.getConnection((err, connection) => {
     if (err) {
+      console.log(err);
       return callback("Get Connection Error. Error:" + err, null);
     } else if (connection) {
       connection.query(query, (err, rows, fields) => {
         connection.release();
         if (err) {
+          console.log(err);
           return callback("Err. " + err, null);
         }
         return callback(null, rows);
       });
     } else {
+      connection.release();
       return callback(true, "No Connection");
     }
   });
