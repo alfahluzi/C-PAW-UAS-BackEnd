@@ -5,37 +5,69 @@ const { END_POINT } = require("../../helper/end_point_helper");
 const router = express.Router();
 module.exports = router;
 
+let formatName =
+  new Date().toISOString().slice(0, 10) +
+  "-" +
+  Math.floor(Math.random() * 10000);
+
 const storage = multer.diskStorage({
   destination: "./public/images",
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + "-" + file.originalname);
+  filename: function (req, file, callback) {
+    callback(null, formatName + "-" + file.originalname);
   },
 });
 const upload = multer({ storage: storage }).single("file");
 
-router.post(END_POINT.tambah_produk, (req, res) => {
-  let { nama, detail, kuantitas, harga, id_jenis } = req.body;
-  let fileName = req.files[0].filename;
-  console.log("tambah produk");
-  console.log(fileName);
-  upload(req, res, (err) => {
-    if (err instanceof multer.MulterError) {
-      console.log(err);
-      return res.status(408).json(err);
-    } else if (err) {
-      console.log(err);
-      return res.status(500).json(err);
-    }
-    db_query(
-      `INSERT INTO barang (nama, detail, kuantitas, foto, jenis, harga) 
-      VALUES ("${nama}", "${detail}", ${kuantitas}, "${fileName}", ${id_jenis}, ${harga});`,
-      (err, rows) => {
-        if (err) return res.status(500).json(err);
-        console.log("query success");
-        return res.status(200).json(rows);
-      }
-    );
+router.post(END_POINT.hapus_produk, (req, res) => {
+  let id = req.body.id;
+  db_query(`DELETE FROM barang WHERE Barang_id = ${id}`, (err, rows) => {
+    if (err) return res.status(500).json(err);
+    console.log("query success");
+    return res.status(200).json(rows);
   });
+});
+
+router.post(END_POINT.edit_produk, upload, (req, res) => {
+  let id = req.body.id;
+  let nama = req.body.nama;
+  let detail = req.body.detail;
+  let kuantitas = req.body.kuantitas;
+  let harga = req.body.harga;
+  let id_jenis = req.body.id_jenis;
+  let filename = formatName + "-" + req.body.filename;
+  console.log("edit jenis");
+  db_query(
+    `UPDATE barang
+    SET nama = '${nama}', 
+        detail = '${detail}', 
+        kuantitas = ${kuantitas}, 
+        foto = '${filename}', 
+        jenis = ${id_jenis}, 
+        harga = ${harga} 
+    WHERE Barang_id = ${id};`,
+    (err, rows) => {
+      if (err) return res.status(500).json(err);
+      console.log("query success");
+      return res.status(200).json(rows);
+    }
+  );
+});
+router.post(END_POINT.tambah_produk, upload, (req, res) => {
+  let nama = req.body.nama;
+  let detail = req.body.detail;
+  let kuantitas = req.body.kuantitas;
+  let harga = req.body.harga;
+  let id_jenis = req.body.id_jenis;
+  let filename = formatName + "-" + req.body.filename;
+  db_query(
+    `INSERT INTO barang (nama, detail, kuantitas, foto, jenis, harga)
+    VALUES ("${nama}", "${detail}", ${kuantitas}, "${filename}", ${id_jenis}, ${harga});`,
+    (err, rows) => {
+      if (err) return res.status(500).json(err);
+      console.log("query success");
+      return res.status(200).json(rows);
+    }
+  );
 });
 
 router.get(END_POINT.delete_jenis, (req, res) => {

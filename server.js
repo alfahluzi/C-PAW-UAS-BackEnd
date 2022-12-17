@@ -1,13 +1,20 @@
 const express = require("express");
+const { urlencoded } = require("express");
+const {
+  db_testConnection,
+  db_disconnect,
+} = require("./helper/db_connect_helper");
 const { END_POINT } = require("./helper/end_point_helper");
 const app = express();
 const bodyParser = require("body-parser");
 const adminProduk_c = require("./controller/admin/Produk");
 const adminTransaksi_c = require("./controller/admin/Transaksi");
 const cors = require("cors");
+
+// ================== server configuration
+app.use(express.json());
 app.use(express.static("public"));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(urlencoded(express.urlencoded({ extended: false })));
 app.use(cors());
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -15,11 +22,7 @@ app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Methods", "Content-Type, Authorization");
   next();
 });
-
-const {
-  db_testConnection,
-  db_disconnect,
-} = require("./helper/db_connect_helper");
+// ================== server configuration
 
 app.use("/", adminProduk_c);
 app.use("/", adminTransaksi_c);
