@@ -266,3 +266,17 @@ router.get(END_POINT.data_konfirmasi_pembayaran, (req, res) => {
     }
   );
 });
+
+router.get(END_POINT.laporan_penjualan, (req, res) => {
+  console.log("laporan");
+  db_query(
+    `SELECT penjualan.penjualan_id as id,penjualan.kode_resi,penjualan.nama_barang,penjualan.kuantitas,
+    penjualan.harga_jual,penjualan.harga_total
+    FROM penjualan	
+`,
+  (err, rows) => {
+  if (err) return res.status(500).json(err);
+  return res.status(200).json(rows);
+  }
+  );
+});

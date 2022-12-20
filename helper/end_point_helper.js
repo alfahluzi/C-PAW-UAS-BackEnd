@@ -20,7 +20,8 @@ const END_POINT = {
   data_selesai: "/data-selesai",
   update_pengambilan: "/update-pengambilan",
   update_pembayaran: "/update-pembayaran",
-  konfirmasi_pengambilan: "/konfirmasi-pengambilan",
+  konfirmasi_pengambilan: "/konfirmasi-pengambilan",  
+  laporan_penjualan:"/laporan-penjualan"
 };
 
 module.exports = { END_POINT };
