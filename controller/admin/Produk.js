@@ -64,7 +64,7 @@ router.post(END_POINT.tambah_produk, upload, (req, res) => {
     VALUES ("${nama}", "${detail}", ${kuantitas}, "${filename}", ${id_jenis}, ${harga});`,
     (err, rows) => {
       if (err) return res.status(500).json(err);
-      console.log("query success");
+      console.log("query tambah produk success");
       return res.status(200).json(rows);
     }
   );

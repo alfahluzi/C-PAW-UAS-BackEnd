@@ -20,8 +20,14 @@ const END_POINT = {
   data_selesai: "/data-selesai",
   update_pengambilan: "/update-pengambilan",
   update_pembayaran: "/update-pembayaran",
-  konfirmasi_pengambilan: "/konfirmasi-pengambilan",  
-  laporan_penjualan:"/laporan-penjualan"
+  konfirmasi_pengambilan: "/konfirmasi-pengambilan",
+  laporan_penjualan: "/laporan-penjualan",
+  tambah_keranjang: "/tambah-keranjang",
+  edit_keranjang: "/edit-keranjang",
+  keranjang: "/keranjang",
+  bayar: "/bayar",
+  login: "/login",
+  registration: "/registration",
 };
 
 module.exports = { END_POINT };

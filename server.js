@@ -9,6 +9,7 @@ const app = express();
 const bodyParser = require("body-parser");
 const adminProduk_c = require("./controller/admin/Produk");
 const adminTransaksi_c = require("./controller/admin/Transaksi");
+const userActivities_c = require("./controller/user/User");
 const cors = require("cors");
 
 // ================== server configuration
@@ -26,6 +27,7 @@ app.use((req, res, next) => {
 
 app.use("/", adminProduk_c);
 app.use("/", adminTransaksi_c);
+app.use("/", userActivities_c);
 
 const PORT = 4000;
 app.listen(PORT, "localhost", function () {

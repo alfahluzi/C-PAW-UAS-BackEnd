@@ -9,7 +9,7 @@ var pool = mysql.createPool({
 
 function db_disconnect() {
   pool.getConnection((err, conn) => {
-    if (conn.release()) return true;
+    if (conn.destroy() || conn.end()) return true;
     return false;
   });
 }

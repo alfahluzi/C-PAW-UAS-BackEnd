@@ -5,7 +5,7 @@ const router = express.Router();
 module.exports = router;
 
 class ObjectData {
-  constructor(id, nama, kontak, waktu, resi, item, total) {
+  constructor(id, nama, kontak, waktu, resi, item, total, bukti) {
     return {
       id: id,
       kustomer: {
@@ -16,6 +16,7 @@ class ObjectData {
       resi: resi,
       item: item,
       total: total,
+      bukti: bukti,
     };
   }
 }
@@ -121,7 +122,8 @@ router.get(END_POINT.data_selesai, (req, res) => {
                 row1.waktu + " " + row1.tanggal,
                 row1.resi,
                 arrItem,
-                row1.total
+                row1.total,
+                row1.bukti
               )
             );
           });
@@ -166,7 +168,8 @@ router.get(END_POINT.data_pengambilan, (req, res) => {
                 row1.waktu + " " + row1.tanggal,
                 row1.resi,
                 arrItem,
-                row1.total
+                row1.total,
+                row1.bukti
               )
             );
           });
@@ -211,7 +214,8 @@ router.get(END_POINT.data_disiapkan, (req, res) => {
                 row1.waktu + " " + row1.tanggal,
                 row1.resi,
                 arrItem,
-                row1.total
+                row1.total,
+                row1.bukti
               )
             );
           });
@@ -256,7 +260,8 @@ router.get(END_POINT.data_konfirmasi_pembayaran, (req, res) => {
                 row1.waktu + " " + row1.tanggal,
                 row1.resi,
                 arrItem,
-                row1.total
+                row1.total,
+                row1.bukti
               )
             );
           });
@@ -274,9 +279,9 @@ router.get(END_POINT.laporan_penjualan, (req, res) => {
     penjualan.harga_jual,penjualan.harga_total
     FROM penjualan	
 `,
-  (err, rows) => {
-  if (err) return res.status(500).json(err);
-  return res.status(200).json(rows);
-  }
+    (err, rows) => {
+      if (err) return res.status(500).json(err);
+      return res.status(200).json(rows);
+    }
   );
 });
